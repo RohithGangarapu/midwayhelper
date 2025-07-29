@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Journey Ticket</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f3f4f6;
+      color: #1f2937;
+    }
+
+    .ticket-container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .ticket-header {
+      border-bottom: 2px dashed #ccc;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .ticket-header h2 {
+      margin: 0;
+      color: #2563eb;
+    }
+
+    .info-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .info-box {
+      flex: 1 1 45%;
+    }
+
+    .info-box label {
+      font-weight: bold;
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+
+    .info-box span {
+      display: block;
+      font-size: 1rem;
+      margin-top: 4px;
+    }
+
+    #map {
+      height: 350px;
+      border-radius: 12px;
+      margin-top: 20px;
+    }
+
+    .status-banner {
+      background: #2563eb;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 10px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 600px) {
+      .info-box {
+        flex: 1 1 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+{% for i in data %}
+<div class="ticket-container">
+  <div class="status-banner">
+    👋 Hello, <strong>{{i.customer.name}}</strong> — Your ride is live!
+  </div>
+
+  <div class="ticket-header">
+    <h2>Journey Ticket</h2>
+    <span>Booking ID: <strong>#JNY123456</strong></span>
+  </div>
+
+  <div class="info-group">
+    <div class="info-box">
+      <label>From</label>
+      <span>{{i.source}}</span>
+    </div>
+    <div class="info-box">
+      <label>To</label>
+      <span>{{i.destination}}</span>
+    </div>
+    <div class="info-box">
+      <label>Pickup Point</label>
+      <span>{{i.pickup}}</span>
+    </div>
+    <div class="info-box">
+      <label>Date</label>
+      <span>{{i.date}}</span>
+    </div>
+    <div class="info-box">
+      <label>Driver</label>
+      <span>{{i.driver.name}} - {{i.driver.phone}}</span>
+    </div>
+    <div class="info-box">
+      <label>Vehicle</label>
+      <span>{{i.vehicle_type}} - {{i.vehicle_no}}</span>
+    </div>
+    <div class="info-box">
+      <label>Seats</label>
+      <span>{{i.booked_seats}}</span>
+    </div>
+    <div class="info-box">
+      <label>Payment</label>
+      <span>UPI (Paid {{i.price}})</span>
+    </div>
+  </div>
+{% endfor %}
+  <div id="map"></div>
+</div>
+</body>
+</html>

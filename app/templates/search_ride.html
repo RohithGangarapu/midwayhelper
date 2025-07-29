@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SmartRoute - Search</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: radial-gradient(circle at top, #1e1e1e, #121212);
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      font-weight: 600;
+      color: #00bcd4;
+      letter-spacing: 0.5px;
+      text-align: center;
+    }
+
+    .search-form {
+      width: 100%;
+      max-width: 400px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 20px 30px rgba(0, 0, 0, 0.3);
+      animation: fadeInUp 0.6s ease;
+    }
+
+    .search-form label {
+      font-size: 0.95rem;
+      margin-bottom: 0.4rem;
+      display: block;
+      color: #cccccc;
+      font-weight: 500;
+    }
+
+    .search-form input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1.4rem;
+      border: none;
+      border-radius: 10px;
+      background-color: #2b2b2b;
+      color: #fff;
+      font-size: 1rem;
+      transition: 0.3s ease-in-out;
+    }
+
+    .search-form input:focus {
+      background-color: #353535;
+      outline: 2px solid #00bcd4;
+    }
+
+    .search-form input::placeholder {
+      color: #888;
+    }
+
+    .search-form button {
+      width: 100%;
+      padding: 0.9rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #121212;
+      background: linear-gradient(135deg, #00bcd4, #00acc1);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .search-form button:hover {
+      background: linear-gradient(135deg, #0097a7, #00acc1);
+    }
+
+    .footer-nav {
+      width: 100%;
+      background: #1a1a1a;
+      padding: 1rem;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      border-top: 1px solid #2c2c2c;
+    }
+
+    .footer-nav a {
+      color: #bbbbbb;
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: color 0.3s ease;
+    }
+
+    .footer-nav a:hover {
+      color: #ffffff;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        transform: translateY(40px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @media (max-width: 500px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+      .search-form {
+        padding: 1.5rem;
+        border-radius: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Find the Best Route</h1>
+    <form class="search-form" action="{% url 'searchride' %}" method="POST">
+      {% csrf_token %}
+      <label for="from">From</label>
+      <input type="text" id="from" name="from" placeholder="e.g. Hyderabad" required />
+
+      <label for="to">To</label>
+      <input type="text" id="to" name="to" placeholder="e.g. Vijayawada" required />
+
+      <button type="submit">Search Route</button>
+    </form>
+  </div>
+
+  <div class="footer-nav">
+    <a href="{% url 'home' %}">Home</a>
+    <a href="{% url 'createride' %}">Create Ride</a>
+    <a href="{% url 'bookings' %}">My Bookings</a>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Your App</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: rgba(30, 30, 30, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-section h1 {
+            color: #fff;
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .welcome-text {
+            color: #b0b0b0;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .form-floating {
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            border: 2px solid #404040;
+            border-radius: 12px;
+            padding: 15px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(45, 45, 45, 0.9);
+            color: #fff;
+        }
+
+        .form-control:focus {
+            border-color: #ff6b6b;
+            box-shadow: 0 0 0 0.25rem rgba(255, 107, 107, 0.15);
+            background: #2d2d2d;
+            color: #fff;
+        }
+
+        .form-floating > label {
+            color: #b0b0b0;
+        }
+
+        .form-floating > .form-control:focus ~ label,
+        .form-floating > .form-control:not(:placeholder-shown) ~ label {
+            color: #ff6b6b;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            border: none;
+            border-radius: 12px;
+            padding: 15px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+        }
+
+        .divider {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+            color: #777;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #404040;
+        }
+
+        .divider span {
+            background: rgba(30, 30, 30, 0.95);
+            padding: 0 20px;
+            font-weight: 500;
+        }
+
+        .social-buttons {
+            margin-bottom: 30px;
+        }
+
+        .btn-social {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 2px solid #404040;
+            background: rgba(45, 45, 45, 0.8);
+            color: #fff;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-google:hover {
+            border-color: #db4437;
+            background: #db4437;
+            color: white;
+        }
+
+        .btn-facebook:hover {
+            border-color: #4267B2;
+            background: #4267B2;
+            color: white;
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .forgot-password a {
+            color: #ff6b6b;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #404040;
+            color: #b0b0b0;
+        }
+
+        .signup-link a {
+            color: #4ecdc4;
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        .remember-me {
+            margin-bottom: 20px;
+        }
+
+        .form-check-label {
+            color: #b0b0b0;
+        }
+
+        .form-check-input:checked {
+            background-color: #ff6b6b;
+            border-color: #ff6b6b;
+        }
+
+        @media (max-width: 576px) {
+            .login-card {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+            
+            .logo-section h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="logo-section">
+                <h1><i class="fas fa-shield-alt"></i>MidWayHelper</h1>
+                <p class="welcome-text">Welcome back! Please sign in to your account</p>
+            </div>
+
+            <form id="loginForm" method="post">
+                {% csrf_token %}
+                <div class="form-floating">
+                    <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email" required>
+                    <label for="email"><i class="fas fa-envelope me-2"></i>Email address</label>
+                </div>
+
+                <div class="form-floating">
+                    <input type="password" class="form-control" id="password" placeholder="Password" name="pass" required>
+                    <label for="password"><i class="fas fa-lock me-2"></i>Password</label>
+                </div>
+
+                <div class="remember-me">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="rememberMe">
+                        <label class="form-check-label" for="rememberMe">
+                            Remember me
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100" id="sign">
+                    <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                </button>
+            </form>
+
+            <div class="forgot-password">
+                <a href="#" onclick="forgotPassword()">Forgot your password?</a>
+            </div>
+
+            <div class="divider">
+                <span>or continue with</span>
+            </div>
+
+            <div class="social-buttons">
+                <button type="button" class="btn btn-social btn-google" onclick="signInWithGoogle()">
+                    <i class="fab fa-google"></i>
+                    Continue with Google
+                </button>
+                
+                <button type="button" class="btn btn-social btn-facebook" onclick="signInWithFacebook()">
+                    <i class="fab fa-facebook-f"></i>
+                    Continue with Facebook
+                </button>
+            </div>
+
+            <div class="signup-link">
+                Don't have an account?
+                <a href="{% url 'register_user' %}" onclick="navigateToSignup()">Sign up here</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function getCSRFTokenFromDOM() {
+     const tokenInput = document.querySelector('input[name="csrfmiddlewaretoken"]');
+     return tokenInput ? tokenInput.value : '';
+     }
+        const button=document.getElementById("sign");
+        const email=document.getElementById("email");
+        const pass=document.getElementById("password");
+        const csrfToken = getCSRFTokenFromDOM(); 
+       button.addEventListener("click",()=>{
+        console.log("clicked");
+          try {
+      fetch('http://127.0.0.1:8000/api/users/', {
+        method: 'GET',
+        headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken 
+            },
+          })
+      .then(response=>response.json())
+      .then(data=>{
+        for(let i=0;i<data.length;i++){
+           if(data[i].email==email && data[i].password==pass){
+                window.location.href="http://127.0.0.1:8000/api/home/";
+           }
+        }
+      })
+
+    } catch (error) {
+      alert('An error occurred while submitting the form.');
+    }
+  });
+    </script>
+</body>
+</html>

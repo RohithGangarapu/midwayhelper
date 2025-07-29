@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - MidWayHelper</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px 0;
+        }
+
+        .registration-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .registration-card {
+            background: rgba(30, 30, 30, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-section h1 {
+            color: #fff;
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .welcome-text {
+            color: #b0b0b0;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .form-floating {
+            margin-bottom: 20px;
+        }
+
+        .form-control, .form-select {
+            border: 2px solid #404040;
+            border-radius: 12px;
+            padding: 15px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(45, 45, 45, 0.9);
+            color: #fff;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #ff6b6b;
+            box-shadow: 0 0 0 0.25rem rgba(255, 107, 107, 0.15);
+            background: #2d2d2d;
+            color: #fff;
+        }
+
+        .form-floating > label {
+            color: #b0b0b0;
+        }
+
+        .form-floating > .form-control:focus ~ label,
+        .form-floating > .form-control:not(:placeholder-shown) ~ label,
+        .form-floating > .form-select:focus ~ label,
+        .form-floating > .form-select:not([value=""]) ~ label {
+            color: #ff6b6b;
+        }
+
+        .form-select option {
+            background: #2d2d2d;
+            color: #fff;
+        }
+
+        .file-upload-section {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 2px dashed #404040;
+            border-radius: 12px;
+            background: rgba(45, 45, 45, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-section:hover {
+            border-color: #ff6b6b;
+            background: rgba(45, 45, 45, 0.8);
+        }
+
+        .file-upload-label {
+            color: #b0b0b0;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-input-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .file-input-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .file-selected {
+            color: #4ecdc4;
+            margin-left: 15px;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            border: none;
+            border-radius: 12px;
+            padding: 15px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+        }
+
+        .terms-section {
+            margin: 25px 0;
+            padding: 20px;
+            background: rgba(45, 45, 45, 0.3);
+            border-radius: 12px;
+            border: 1px solid #404040;
+        }
+
+        .form-check-label {
+            color: #b0b0b0;
+        }
+
+        .form-check-input:checked {
+            background-color: #ff6b6b;
+            border-color: #ff6b6b;
+        }
+
+        .terms-section a {
+            color: #4ecdc4;
+            text-decoration: none;
+        }
+
+        .terms-section a:hover {
+            text-decoration: underline;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #404040;
+            color: #b0b0b0;
+        }
+
+        .login-link a {
+            color: #4ecdc4;
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .row {
+            margin-bottom: 0;
+        }
+
+        .col-md-6 {
+            padding-right: 10px;
+            padding-left: 10px;
+        }
+
+        .progress-indicator {
+            margin-bottom: 30px;
+        }
+
+        .progress {
+            height: 6px;
+            background: #404040;
+            border-radius: 3px;
+        }
+
+        .progress-bar {
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            border-radius: 3px;
+        }
+
+        @media (max-width: 768px) {
+            .registration-card {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+            
+            .logo-section h1 {
+                font-size: 2rem;
+            }
+
+            .col-md-6 {
+                padding-right: 15px;
+                padding-left: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="registration-container">
+        <div class="registration-card">
+            <div class="logo-section">
+                <h1><i class="fas fa-compass"></i> MidWayHelper</h1>
+                <p class="welcome-text">Create your account and start your journey with us</p>
+            </div>
+
+            <div class="progress-indicator">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 0%" id="formProgress"></div>
+                </div>
+                <small class="text-muted">Complete all fields to activate Sign Up</small>
+            </div>
+            <form id="registrationForm" method="post">
+                 
+                {% csrf_token %}
+                <!-- Personal Information -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="fullName" placeholder="Full Name" required>
+                            <label for="fullName"><i class="fas fa-user me-2"></i>Full Name</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="email" class="form-control" id="email" placeholder="name@example.com" required>
+                            <label for="email"><i class="fas fa-envelope me-2"></i>Email Address</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="tel" class="form-control" id="phoneNumber" placeholder="Phone Number" required>
+                            <label for="phoneNumber"><i class="fas fa-phone me-2"></i>Phone Number</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="password" class="form-control" id="password" placeholder="Password" required>
+                            <label for="password"><i class="fas fa-lock me-2"></i>Password</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Financial Information -->
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="upiId" placeholder="UPI ID" required>
+                    <label for="upiId"><i class="fas fa-credit-card me-2"></i>UPI ID (example@paytm)</label>
+                </div>
+                <input type="hidden" name="csrfmiddlewaretoken" value="ABC123...">
+                <!-- License Information -->
+                <div class="form-floating">
+                    <select class="form-select" id="licenseType" required>
+                        <option value="">Select License Type</option>
+                        <option value="driving">Driving License</option>
+                        <option value="commercial">Commercial Driving License</option>
+                        <option value="motorcycle">Motorcycle License</option>
+                        <option value="heavy-vehicle">Heavy Vehicle License</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <label for="licenseType"><i class="fas fa-id-card me-2"></i>License Type</label>
+                </div>
+
+                <!-- Document Upload Section -->
+                <div class="file-upload-section">
+                    <label class="file-upload-label">
+                        <i class="fas fa-upload me-2"></i>Upload Verification Documents
+                    </label>
+                    
+                    <div class="file-input-wrapper">
+                        <label for="licenseDocument" class="file-input-button">
+                            <i class="fas fa-id-card me-2"></i>Choose License Document
+                        </label>
+                        <input type="file" id="licenseDocument" class="file-input" required>
+                    </div>
+
+                <button type="submit" class="btn btn-primary w-100" id="submitBtn" >
+                    <i class="fas fa-user-plus me-2"></i>Create Account
+                </button>
+            </form>
+
+            <div class="login-link">
+                Already have an account?
+                <a href="#" onclick="navigateToLogin()">Sign in here</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+   function getCSRFTokenFromDOM() {
+     const tokenInput = document.querySelector('input[name="csrfmiddlewaretoken"]');
+     return tokenInput ? tokenInput.value : '';
+     }
+        // Progress tracking
+        function updateProgress() {
+            let completedFields = 0;
+            const totalFields = requiredFields.length;
+
+            requiredFields.forEach(field => {
+                if (field.type === 'file') {
+                    if (field.files.length > 0) completedFields++;
+                } else if (field.type === 'checkbox') {
+                    if (field.checked) completedFields++;
+                } else if (field.value.trim() !== '') {
+                    completedFields++;
+                }
+            });
+
+            const progress = (completedFields / totalFields) * 100;
+            progressBar.style.width = progress + '%';
+            
+            // Enable submit button when all required fields are complete
+            submitBtn.disabled = progress < 100;
+        }
+
+    async function submitUserForm(e) {
+    e.preventDefault();
+
+    const fullName = document.getElementById('fullName').value;
+    const email = document.getElementById('email').value;
+    const phoneNumber = document.getElementById('phoneNumber').value;
+    const password = document.getElementById('password').value;
+    const upiId = document.getElementById('upiId').value;
+    const licenseType = document.getElementById('licenseType').value;
+
+    const licenseFile = document.getElementById('licenseDocument').files[0];
+
+    const formData = new FormData();
+    formData.append('name', fullName);
+    formData.append('email', email);
+    formData.append('phone', phoneNumber);
+    formData.append('password', password);
+    formData.append('upi', upiId);
+    formData.append('license', licenseFile);
+    const csrfToken = getCSRFTokenFromDOM(); 
+    if (csrfToken.length !== 64) {
+        console.error("❌ Invalid CSRF Token Length:", csrfToken);
+        return;
+    }
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/users/', {
+        method: 'POST',
+        headers: {
+                'X-CSRFToken': csrfToken  // must be exactly this header name
+            },
+        body: formData
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        alert('User created successfully!');
+        window.location.href = "{% url 'login' %}";
+        console.log(data);
+      } else {
+        alert('Failed to create user.');
+        alert(csrfToken);
+        console.error(data);
+      }
+    } catch (error) {
+      alert('An error occurred while submitting the form.');
+    }
+  }
+
+  // Attach this to your form's submit
+  document.getElementById("submitBtn").addEventListener("click", submitUserForm);
+    </script>
+</body>
+</html>

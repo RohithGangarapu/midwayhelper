@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Live Ride Tracking</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"/>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f3f4f6;
+      color: #1f2937;
+    }
+
+    .tracking-container {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .tracking-header {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .tracking-header h2 {
+      color: #2563eb;
+      margin: 0;
+      font-size: 1.8rem;
+    }
+
+    .map-status {
+      background: #2563eb;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 10px;
+      text-align: center;
+      margin-bottom: 24px;
+      font-size: 1rem;
+    }
+
+    #map {
+      height: 500px;
+      width: 100%;
+      border-radius: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .tracking-container {
+        margin: 10px;
+        padding: 15px;
+      }
+      #map {
+        height: 400px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="tracking-container">
+  <div class="tracking-header">
+    <h2>Live Ride Tracking</h2>
+  </div>
+
+  <div class="map-status">
+    🚗 Tracking driver for Booking <strong>#{{ ride_id }}</strong>
+  </div>
+
+  <div id="map"></div>
+</div>
+<!-- Scripts -->
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+<script>
+  const rideId = "{{ context.ride_id }}";
+
+  // 🚨 Use `|safe` to inject raw JSON array (no quotes!)
+  const source = {{ context.source|safe }};
+  const pickup = {{ context.pickup|safe }};
+  const destination = {{ context.destination|safe }};
+  const dropdown = {{ context.dropdown|safe }};
+
+  // 🔐 Use default empty string + safe fallback if last lat/lng are missing
+  const lastLatStr = "{{ context.last_lat|default:'' }}";
+  const lastLngStr = "{{ context.last_lng|default:'' }}";
+
+  // 🎯 Fallback to pickup if last_lat/lng are missing or invalid
+  const fallbackLat = isNaN(parseFloat(lastLatStr)) ? pickup[0] : parseFloat(lastLatStr);
+  const fallbackLng = isNaN(parseFloat(lastLngStr)) ? pickup[1] : parseFloat(lastLngStr);
+
+  // 🗺️ Initialize Leaflet map
+  const map = L.map('map').setView([fallbackLat, fallbackLng], 10);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18
+  }).addTo(map);
+
+  const driverIcon = L.icon({
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/194/194633.png',
+    iconSize: [32, 32]
+  });
+
+  const pickupIcon = L.icon({
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
+    iconSize: [30, 30]
+  });
+
+  L.marker(source).addTo(map).bindPopup("Source");
+  L.marker(destination).addTo(map).bindPopup("Destination");
+  L.marker(pickup, { icon: pickupIcon }).addTo(map).bindPopup("Pickup");
+
+  const route = [source, pickup, dropdown, destination];
+  L.polyline(route, { color: 'blue', weight: 5 }).addTo(map);
+
+  const driverMarker = L.marker([fallbackLat, fallbackLng], { icon: driverIcon }).addTo(map).bindPopup("Driver");
+
+  // 🔌 WebSocket for live tracking
+  const socket = new WebSocket("wss://1e06be7fc346.ngrok-free.app/ws/track/" + rideId + "/");
+
+  socket.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    if (data.lat && data.lng) {
+      const latlng = [data.lat, data.lng];
+      driverMarker.setLatLng(latlng);
+      map.panTo(latlng);
+    }
+  };
+
+  socket.onopen = () => console.log("✅ WebSocket connected");
+  socket.onerror = (err) => console.error("❌ WebSocket Error:", err);
+  socket.onclose = () => console.warn("⚠️ WebSocket Closed");
+</script>
+
+</body>
+</html>

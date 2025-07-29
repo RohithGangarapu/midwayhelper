@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ ride.source }} ➝ {{ ride.destination }} | MidwayHelper</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  <style>
+    body {
+      background: #f8f9fa;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    header {
+      background: linear-gradient(to right, #007bff, #00c6ff);
+      padding: 1rem 2rem;
+      color: white;
+      text-align: center;
+      font-size: 1.6rem;
+      font-weight: bold;
+      border-radius: 0 0 20px 20px;
+    }
+    .card {
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+      border: none;
+    }
+    .map-container {
+      height: 300px;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .btn-whatsapp {
+      background-color: #25D366;
+      color: white;
+      font-weight: 500;
+    }
+    .btn-book {
+      background-color:#007bff;
+      color: white;
+      font-weight: 500;
+    }
+    .btn-whatsapp:hover {
+      background-color: #1ebe5b;
+    }
+    .input-group button {
+      width: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>🚐 Ride Details - MidwayHelper</header>
+
+  <div class="container my-5">
+    <div class="row g-4">
+      <!-- Ride Info -->
+      <div class="col-md-6">
+        <div class="card p-4">
+          <h4 class="text-primary">{{ ride.source }} ➝ {{ ride.destination }}</h4>
+          <ul class="list-group list-group-flush mt-3">
+            <li class="list-group-item"><strong>Date & Time:</strong> {{ ride.date }}</li>
+            <li class="list-group-item"><strong>Vehicle:</strong> {{ ride.vehicle_type }}</li>
+            <li class="list-group-item"><strong>Available Seats:</strong> {{ ride.vacancy }}</li>
+            <li class="list-group-item"><strong>Driver:</strong> {{ ride.user.name }}</li>
+            <li class="list-group-item"><strong>Rating:</strong> ⭐ {{ ride.rating|default:"Not rated" }}</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Map -->
+      <div class="col-md-6">
+        <div class="card p-4">
+          <h5 class="mb-3">📍 Route Preview</h5>
+          <div id="map" class="map-container"></div>
+        </div>
+      </div>
+
+      <!-- Contact & Booking -->
+      <div class="col-12">
+        <div class="card p-4">
+          <h5>📞 Contact Driver</h5>
+          <p><strong>Phone:</strong> <a href="tel:{{ ride.user.phone }}">{{ ride.user.phone }}</a></p>
+          <a href="https://wa.me/{{ ride.contact_number }}?text=Hi, I'm interested in the ride from {{ ride.source }} to {{ ride.destination }}" target="_blank" class="btn btn-whatsapp mb-3">
+            <img src="https://img.icons8.com/color/24/whatsapp.png" alt="WhatsApp Icon" class="me-1"> Chat via WhatsApp
+          </a>
+
+          <!-- Seat Counter -->
+          <div class="mt-3">
+            <label for="seatCount" class="form-label"><strong>🎫 Seats to Book:</strong></label>
+            <div class="input-group" style="max-width: 200px;">
+              <button class="btn btn-outline-primary" type="button" onclick="changeSeatCount(-1)">−</button>
+             <form method="POST" action="{% url 'book' ride.user.name %}">
+            {% csrf_token %}
+            <div class="input-group">
+              <input type="number" id="seatCount" name="seats" class="form-control text-center" value="1" min="1" max="{{ ride.vacancy }}" readonly>
+              <button class="btn btn-outline-primary" type="button" onclick="changeSeatCount(1)">+</button>
+            </div>
+            <button type="submit" class="btn btn-book mt-3">Book the Vehicle</button>
+          </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaflet Map -->
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  {% if ride.source_lat and ride.source_lon and ride.dest_lat and ride.dest_lon %}
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const map = L.map('map').setView([{{ ride.source_lat }}, {{ ride.source_lon }}], 10);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18
+      }).addTo(map);
+
+      L.marker([{{ ride.source_lat }}, {{ ride.source_lon }}]).addTo(map)
+        .bindPopup("Start: {{ ride.source }}").openPopup();
+
+      L.marker([{{ ride.dest_lat }}, {{ ride.dest_lon }}]).addTo(map)
+        .bindPopup("End: {{ ride.destination }}");
+
+      L.polyline([
+        [{{ ride.source_lat }}, {{ ride.source_lon }}],
+        [{{ ride.dest_lat }}, {{ ride.dest_lon }}]
+      ], { color: '#007bff', weight: 4 }).addTo(map);
+    });
+  </script>
+  {% endif %}
+
+  <!-- Seat Counter Script -->
+  <script>
+    function changeSeatCount(delta) {
+      const input = document.getElementById('seatCount');
+      let value = parseInt(input.value);
+      const max = parseInt(input.max);
+      const min = parseInt(input.min);
+      value += delta;
+      if (value >= min && value <= max) {
+        input.value = value;
+      }
+    }
+
+    function confirmBooking() {
+      const seats = document.getElementById('seatCount').value;
+      alert(`🚐 Booking ${seats} seat(s)!`);
+      // TODO: Replace alert with actual form POST or navigation
+    }
+  </script>
+</body>
+</html>
